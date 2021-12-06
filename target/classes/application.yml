@@ -1,0 +1,33 @@
+server:
+  port: 8310
+  http2:
+    enabled: true
+#  ssl:
+#    key-store: classpath:shfqkeystore.jks
+#    key-store-password: gongzhiyuan
+#    key-password: gongzhiyuan
+spring:
+  application:
+    name: Adaptor
+  rabbitmq:
+    host: 172.20.10.2
+    username: admin
+    password: admin
+    port: 5672
+    virtual-host: zcnh_mb_test
+
+
+replay:
+  speed: 10
+  #tcp, udp
+  protocol: udp
+  # json, binary
+  format: json
+  ip: 192.168.140.85
+  port: 9890
+  channelId: tttt
+
+db:
+  sqlite:
+    path: /db/test.sqlite
+    #path: /db/taxi.sqlite

@@ -1,0 +1,32 @@
+@app:name('udptaxi')  
+  
+define stream StandardSteam (source_id string, target_type string, target_id string, target_name string, target_time long, lon double, lat double, geohash long, extend string, alt double, heading double);  
+ 
+@source(type='udp', port='9899', context='taxi', @map(type = 'binary'))
+define stream instream (source_id string, target_type string, target_id string, target_name string, target_time long, lon double, lat double, extend string);   
+ 
+@Store(type="elasticsearch", hostname="elasticsearch", index.name="his_event", index.type="document", point.name="coord", bulk.actions="100", bulk.size="1", concurrent.requests="1", flush.interval="1", backoff.policy.retry.no="3", backoff.policy.wait.time="1") 
+@PrimaryKey("source_id", "target_id", "target_time") 
+define table his_event (source_id string, target_type string, target_id string, target_name string, target_time long, lon double, lat double, geohash long, extend string ,alt double, heading double);  
+  
+@Store(type="elasticsearch", hostname="elasticsearch", index.name="latest_event", index.type="document", point.name="coord", bulk.actions="100", bulk.size="1", concurrent.requests="1", flush.interval="1", backoff.policy.retry.no="3", backoff.policy.wait.time="1")  
+@PrimaryKey("source_id", "target_id") 
+define table latest_event (source_id string, target_type string, target_id string, target_name string, target_time long, lon double, lat double, geohash long, extend string,alt double, heading double);  
+  
+@info(name = 'filter')    
+from instream[not (lat is null ) and not (lon is null ) and lat >= -90.0 and lat <= 90.0  
+ and lon >= -180.0 and lon <= 180.0]     
+select  source_id, target_type, target_id, target_name, currentTimeMillis() as target_time, lon, lat, geo : getGeohashCodeLong(lat, lon, 41) as geohash , extend, 0.0D as alt, 0.0D as heading 
+insert into StandardSteam;    
+  
+@info(name = 'toes_his')  
+from StandardSteam  
+select  * 
+output all every 100 events  
+insert into his_event;  
+  
+@info(name = 'toes_latest')  
+from StandardSteam  
+select  * 
+output all every 100 events  
+insert into latest_event;  

@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- 配置使用的 Spring boot版本为 2.1.1.RELEASE -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.1.RELEASE</version>
+		<relativePath/>
+	</parent>
+
+	<groupId>com.geovis</groupId>
+	<artifactId>taxisimulator</artifactId>
+	<version>1.1.2-SNAPSHOT</version>
+	<name>Demo</name>
+	<description>GeoIotAdaptor</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<siddhi.version>5.0.0</siddhi.version>
+		<netty.verion>4.1.7.Final</netty.verion>
+	</properties>
+
+	<dependencies>
+		<!-- 使用Spring Boot创建web项目，加入web依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- 加入eureka client依赖 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<version>2.1.1.RELEASE</version>
+		</dependency>
+
+		<!-- 使用配置中心 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+			<version>2.1.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!--rabbitmq-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+		<!--pg依赖-->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.1.1</version>
+		</dependency>
+		<!-- 添加gdal依赖，版本必须为2.3.2 -->
+		<dependency>
+			<groupId>org.gdal</groupId>
+			<artifactId>gdal</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+
+		<!-- 添加用户依赖
+		<dependency>
+			<groupId>com.geovis</groupId>
+			<artifactId>user-annotation</artifactId>
+			<version>1.1.2-SNAPSHOT</version>
+		</dependency>-->
+
+		<!-- 添加swagger依赖 -->
+		<dependency>
+			<groupId>com.spring4all</groupId>
+			<artifactId>swagger-spring-boot-starter</artifactId>
+			<version>1.6.0.RELEASE</version>
+		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>cn.com.geovis</groupId>-->
+<!--			<artifactId>geoiot-sender-util</artifactId>-->
+<!--			<version>1.0.0-snapshot</version>-->
+<!--		</dependency>-->
+
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.8.11.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.siddhi</groupId>
+			<artifactId>siddhi-core</artifactId>
+			<version>${siddhi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>${netty.verion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.11</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.57</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20170516</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<!--<dependency>
+			<groupId>org.easy.kafka</groupId>
+			<artifactId>kafka-client</artifactId>
+			<version>0.11.0.0</version>
+		</dependency>-->
+
+
+	</dependencies>
+
+<!--	<dependencyManagement>-->
+<!--		<dependencies>-->
+<!--			<dependency>-->
+<!--				<groupId>org.springframework.cloud</groupId>-->
+<!--				<artifactId>spring-cloud-dependencies</artifactId>-->
+<!--				<version>Greenwich.RC2</version>-->
+<!--				<type>pom</type>-->
+<!--				<scope>import</scope>-->
+<!--			</dependency>-->
+<!--		</dependencies>-->
+<!--	</dependencyManagement>-->
+<!--	<repositories>-->
+<!--		<repository>-->
+<!--			<id>spring-milestones</id>-->
+<!--			<name>Spring Milestones</name>-->
+<!--			<url>https://repo.spring.io/milestone</url>-->
+<!--			<snapshots>-->
+<!--				<enabled>false</enabled>-->
+<!--			</snapshots>-->
+<!--		</repository>-->
+
+<!--		&lt;!&ndash; 配置私服 &ndash;&gt;-->
+<!--&lt;!&ndash;		<repository>&ndash;&gt;-->
+<!--&lt;!&ndash;			<id>nexus</id>&ndash;&gt;-->
+<!--&lt;!&ndash;			<name>geovis nexus</name>&ndash;&gt;-->
+<!--&lt;!&ndash;			<url>http://192.168.140.40:8081/repository/maven-public/</url>&ndash;&gt;-->
+<!--&lt;!&ndash;			<snapshots>&ndash;&gt;-->
+<!--&lt;!&ndash;				<enabled>true</enabled>&ndash;&gt;-->
+<!--&lt;!&ndash;				<updatePolicy>always</updatePolicy>&ndash;&gt;-->
+<!--&lt;!&ndash;			</snapshots>&ndash;&gt;-->
+<!--&lt;!&ndash;		</repository>&ndash;&gt;-->
+<!--	</repositories>-->
+
+
+<!--	<build>-->
+<!--		<plugins>-->
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--			</plugin>-->
+<!--		</plugins>-->
+<!--	</build>-->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+<!--	<build>-->
+<!--		<finalName>ts_server</finalName>-->
+<!--		<plugins>-->
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--				<version>2.1.1.RELEASE</version>-->
+<!--			</plugin>-->
+<!--		</plugins>-->
+<!--		<resources>-->
+<!--			<resource>-->
+<!--				<directory>src/main/resources</directory>-->
+<!--			</resource>-->
+<!--			<resource>-->
+<!--				<directory>src/main/java</directory>-->
+<!--				<includes>-->
+<!--					<include>**/*.xml</include>-->
+<!--				</includes>-->
+<!--			</resource>-->
+<!--		</resources>-->
+<!--	</build>-->
+
+</project>
