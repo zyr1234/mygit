@@ -1,0 +1,18 @@
+{
+  "groups": [
+    {
+      "name": "datasource.mb",
+      "type": "javax.sql.DataSource",
+      "sourceType": "com.geovis.jg.common.config.DataSourceConfig",
+      "sourceMethod": "zcqbDataSource()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "udp.port",
+      "type": "java.lang.String",
+      "description": "Description for udp.port."
+    }
+  ],
+  "hints": []
+}

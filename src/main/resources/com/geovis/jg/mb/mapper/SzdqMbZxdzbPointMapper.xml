@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geovis.jg.mb.mapper.SzdqMbZxdzbPointMapper">
+	
+	<select id="queryMbByPoly" parameterType="com.geovis.jg.mb.model.SzdqMbZxdzbPoint"
+		resultType="com.geovis.jg.mb.model.SzdqMbZxdzbPoint">
+	select t.mbnm,t.jdhzb,t.wdzzb from mb_zxdzb_point t 
+	where MBRWithin(t.zbpnt,geomfromtext('POLYGON((${polyzbs}))')) and t.zbxlxnm=#{zbxlxnm}
+	</select>
+
+	
+</mapper>

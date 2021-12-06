@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geovis.jg.mb.mapper.SzdqMbYxMapper">
+
+	<select id="queryYxidByMbnm" resultType="com.geovis.jg.mb.model.MbYx" parameterType="string">
+		select t.* from mb_yx t where t.mbnm=#{mbnm}
+		order by STR_TO_DATE(t.update_time,'%Y%m%d%H%i%S') desc
+	</select>
+	
+	<select id="queryByYxid" resultType="com.geovis.jg.mb.model.MbYx">
+		select * from mb_yx where yxid=#{yxid}
+	</select>
+
+
+	<select id="getMbYxList" resultType="com.geovis.jg.mb.model.MbYx">
+		select * from mb_yx
+		<where>
+			<if test="mbnm !='' and mbnm !=null">
+				and mbnm=#{mbnm}
+			</if>
+			<if test="yxId !='' and yxId !=null">
+				and yxid=#{yxId}
+			</if>
+		</where>
+
+	</select>
+
+    <select id="getZbYxList" resultType="com.geovis.jg.mb.model.MbZbYx">
+        select yx.*,mb.mbmc from mb_yx_zb yx
+        left join qb_tjwjqk_mb mb on yx.mbnm = mb.mbnm
+        where status != 0
+            <if test="yxMc!='' and yxMc!=null">
+                and yx.yxmc like concat('%', #{yxMc} , '%')
+            </if>
+            <if test="mbMc!='' and mbMc!=null">
+                and mb.mbmc like concat('%', #{mbMc} , '%')
+            </if>
+    </select>
+    <select id="getZbYxByZbYxId" resultType="com.geovis.jg.mb.model.MbZbYx">
+        select * from mb_yx_zb where YXID = #{zbYxId}
+    </select>
+
+    <insert id="insertMbyx" parameterType="com.geovis.jg.mb.model.MbYx">
+		insert into mb_yx (MBNM, YXID,
+		  YXMC, UPDATE_TIME, SJSJ,
+		  ZJLJ, SLT, YXT, MZT,
+		  CJT, ZCSJ, YYXID, RECTIME,
+		  ZBXLXNM, YGTMC, PTMC,
+		  CGQLX, TXCPDJ, TXHS,
+		  TXLS, XYFBL, CXBD,
+		  TXWS, DTTY, TXJZXJD,
+		  TXJZXWD, TXZSJJD, TXZSJWD,
+		  TXYXJJD, TXYXJWD, DWWC,
+		  SYSJ, ZZDW, ZZRQ,
+		  MSXX)
+		values (#{mbnm,jdbcType=VARCHAR}, #{yxid,jdbcType=VARCHAR},
+		  #{yxmc,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{sjsj,jdbcType=TIMESTAMP},
+		  #{zjlj,jdbcType=VARCHAR}, #{slt,jdbcType=VARCHAR}, #{yxt,jdbcType=VARCHAR}, #{mzt,jdbcType=VARCHAR},
+		  #{cjt,jdbcType=VARCHAR}, #{zcsj,jdbcType=VARCHAR}, #{yyxid,jdbcType=VARCHAR}, #{rectime,jdbcType=TIMESTAMP},
+		  #{zbxlxnm,jdbcType=INTEGER}, #{ygtmc,jdbcType=VARCHAR}, #{ptmc,jdbcType=VARCHAR},
+		  #{cgqlx,jdbcType=VARCHAR}, #{txcpdj,jdbcType=VARCHAR}, #{txhs,jdbcType=DECIMAL},
+		  #{txls,jdbcType=DECIMAL}, #{xyfbl,jdbcType=DECIMAL}, #{cxbd,jdbcType=VARCHAR},
+		  #{txws,jdbcType=DECIMAL}, #{dtty,jdbcType=VARCHAR}, #{txjzxjd,jdbcType=VARCHAR},
+		  #{txjzxwd,jdbcType=VARCHAR}, #{txzsjjd,jdbcType=VARCHAR}, #{txzsjwd,jdbcType=VARCHAR},
+		  #{txyxjjd,jdbcType=VARCHAR}, #{txyxjwd,jdbcType=VARCHAR}, #{dwwc,jdbcType=DECIMAL},
+		  #{sysj,jdbcType=TIMESTAMP}, #{zzdw,jdbcType=VARCHAR}, #{zzrq,jdbcType=TIMESTAMP},
+		  #{msxx,jdbcType=LONGVARCHAR})
+      </insert>
+
+	<insert id="insertMbZbyx">
+		insert into mb_yx_zb (ID, MBNM, YXID,
+      YXMC, UPDATE_TIME, SJSJ,
+      ZJLJ, SLT, YXT, MZT,
+      CJT, ZCSJ, YYXID, RECTIME,
+      ZBXLXNM, YGTMC, PTMC,
+      CGQLX, TXCPDJ, TXHS,
+      TXLS, XYFBL, CXBD,
+      TXWS, DTTY, TXJZXJD,
+      TXJZXWD, TXZSJJD, TXZSJWD,
+      TXYXJJD, TXYXJWD, DWWC,
+      SYSJ, ZZDW, ZZRQ,
+      status, zb_type, cjsj,
+      zbsj, MSXX)
+    values (#{id,jdbcType=INTEGER}, #{mbnm,jdbcType=VARCHAR}, #{yxId,jdbcType=VARCHAR},
+      #{yxmc,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{sjsj,jdbcType=TIMESTAMP},
+      #{zjlj,jdbcType=VARCHAR}, #{slt,jdbcType=VARCHAR}, #{yxt,jdbcType=VARCHAR}, #{mzt,jdbcType=VARCHAR},
+      #{cjt,jdbcType=VARCHAR}, #{zcsj,jdbcType=VARCHAR}, #{yyxid,jdbcType=VARCHAR}, #{rectime,jdbcType=TIMESTAMP},
+      #{zbxlxnm,jdbcType=INTEGER}, #{ygtmc,jdbcType=VARCHAR}, #{ptmc,jdbcType=VARCHAR},
+      #{cgqlx,jdbcType=VARCHAR}, #{txcpdj,jdbcType=VARCHAR}, #{txhs,jdbcType=DECIMAL},
+      #{txls,jdbcType=DECIMAL}, #{xyfbl,jdbcType=DECIMAL}, #{cxbd,jdbcType=VARCHAR},
+      #{txws,jdbcType=DECIMAL}, #{dtty,jdbcType=VARCHAR}, #{txjzxjd,jdbcType=VARCHAR},
+      #{txjzxwd,jdbcType=VARCHAR}, #{txzsjjd,jdbcType=VARCHAR}, #{txzsjwd,jdbcType=VARCHAR},
+      #{txyxjjd,jdbcType=VARCHAR}, #{txyxjwd,jdbcType=VARCHAR}, #{dwwc,jdbcType=DECIMAL},
+      #{sysj,jdbcType=TIMESTAMP}, #{zzdw,jdbcType=VARCHAR}, #{zzrq,jdbcType=TIMESTAMP},
+      #{status,jdbcType=TINYINT}, -1, #{cjsj,jdbcType=TIMESTAMP},
+      #{zbsj,jdbcType=TIMESTAMP}, #{msxx,jdbcType=LONGVARCHAR})
+	</insert>
+
+	<delete id="deleteMbyx">
+	   delete from mb_yx
+	   <if test="mbnm !='' and mbnm !=null">
+	   where mbnm=#{mbnm}
+       </if>
+	   <if test="yxid !='' and yxid !=null">
+	   and yxid=#{yxid}
+       </if>
+	</delete>
+    <delete id="deleteZbYxByZbYxId">
+        delete from mb_yx_zb where YXID = #{zbYxId}
+    </delete>
+
+    <update id="updateMbyx" parameterType="com.geovis.jg.mb.model.MbYx">
+		update mb_yx
+    	set MBNM = #{mbnm,jdbcType=VARCHAR},
+      YXID = #{yxid,jdbcType=VARCHAR},
+      YXMC = #{yxmc,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      SJSJ = #{sjsj,jdbcType=TIMESTAMP},
+      ZJLJ = #{zjlj,jdbcType=VARCHAR},
+      SLT = #{slt,jdbcType=VARCHAR},
+      YXT = #{yxt,jdbcType=VARCHAR},
+      MZT = #{mzt,jdbcType=VARCHAR},
+      CJT = #{cjt,jdbcType=VARCHAR},
+      ZCSJ = #{zcsj,jdbcType=VARCHAR},
+      YYXID = #{yyxid,jdbcType=VARCHAR},
+      RECTIME = #{rectime,jdbcType=TIMESTAMP},
+      ZBXLXNM = #{zbxlxnm,jdbcType=INTEGER},
+      YGTMC = #{ygtmc,jdbcType=VARCHAR},
+      PTMC = #{ptmc,jdbcType=VARCHAR},
+      CGQLX = #{cgqlx,jdbcType=VARCHAR},
+      TXCPDJ = #{txcpdj,jdbcType=VARCHAR},
+      TXHS = #{txhs,jdbcType=DECIMAL},
+      TXLS = #{txls,jdbcType=DECIMAL},
+      XYFBL = #{xyfbl,jdbcType=DECIMAL},
+      CXBD = #{cxbd,jdbcType=VARCHAR},
+      TXWS = #{txws,jdbcType=DECIMAL},
+      DTTY = #{dtty,jdbcType=VARCHAR},
+      TXJZXJD = #{txjzxjd,jdbcType=VARCHAR},
+      TXJZXWD = #{txjzxwd,jdbcType=VARCHAR},
+      TXZSJJD = #{txzsjjd,jdbcType=VARCHAR},
+      TXZSJWD = #{txzsjwd,jdbcType=VARCHAR},
+      TXYXJJD = #{txyxjjd,jdbcType=VARCHAR},
+      TXYXJWD = #{txyxjwd,jdbcType=VARCHAR},
+      DWWC = #{dwwc,jdbcType=DECIMAL},
+      SYSJ = #{sysj,jdbcType=TIMESTAMP},
+      ZZDW = #{zzdw,jdbcType=VARCHAR},
+      ZZRQ = #{zzrq,jdbcType=TIMESTAMP},
+      MSXX = #{msxx,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="zbYxForMb">
+		update mb_yx_zb set MBNM = #{mbnm} where YXID = #{yxId}
+	</update>
+    <update id="zbYxRk">
+        update mb_yx_zb
+        set
+          MBNM = #{record.mbnm,jdbcType=VARCHAR},
+          YXID = #{record.yxId,jdbcType=VARCHAR},
+          YXMC = #{record.yxmc,jdbcType=VARCHAR},
+          UPDATE_TIME = #{record.updateTime,jdbcType=VARCHAR},
+          SJSJ = #{record.sjsj,jdbcType=TIMESTAMP},
+          ZJLJ = #{record.zjlj,jdbcType=VARCHAR},
+          SLT = #{record.slt,jdbcType=VARCHAR},
+          YXT = #{record.yxt,jdbcType=VARCHAR},
+          MZT = #{record.mzt,jdbcType=VARCHAR},
+          CJT = #{record.cjt,jdbcType=VARCHAR},
+          ZCSJ = #{record.zcsj,jdbcType=VARCHAR},
+          YYXID = #{record.yyxid,jdbcType=VARCHAR},
+          RECTIME = #{record.rectime,jdbcType=TIMESTAMP},
+          ZBXLXNM = #{record.zbxlxnm,jdbcType=INTEGER},
+          YGTMC = #{record.ygtmc,jdbcType=VARCHAR},
+          PTMC = #{record.ptmc,jdbcType=VARCHAR},
+          CGQLX = #{record.cgqlx,jdbcType=VARCHAR},
+          TXCPDJ = #{record.txcpdj,jdbcType=VARCHAR},
+          TXHS = #{record.txhs,jdbcType=DECIMAL},
+          TXLS = #{record.txls,jdbcType=DECIMAL},
+          XYFBL = #{record.xyfbl,jdbcType=DECIMAL},
+          CXBD = #{record.cxbd,jdbcType=VARCHAR},
+          TXWS = #{record.txws,jdbcType=DECIMAL},
+          DTTY = #{record.dtty,jdbcType=VARCHAR},
+          TXJZXJD = #{record.txjzxjd,jdbcType=VARCHAR},
+          TXJZXWD = #{record.txjzxwd,jdbcType=VARCHAR},
+          TXZSJJD = #{record.txzsjjd,jdbcType=VARCHAR},
+          TXZSJWD = #{record.txzsjwd,jdbcType=VARCHAR},
+          TXYXJJD = #{record.txyxjjd,jdbcType=VARCHAR},
+          TXYXJWD = #{record.txyxjwd,jdbcType=VARCHAR},
+          DWWC = #{record.dwwc,jdbcType=DECIMAL},
+          SYSJ = #{record.sysj,jdbcType=TIMESTAMP},
+          ZZDW = #{record.zzdw,jdbcType=VARCHAR},
+          ZZRQ = #{record.zzrq,jdbcType=TIMESTAMP},
+          status = 0,
+          cjsj = #{record.cjsj,jdbcType=TIMESTAMP},
+          zbsj = #{record.zbsj,jdbcType=TIMESTAMP}
+          where ID = #{record.id,jdbcType=INTEGER}
+    </update>
+    <update id="zbYxForYx">
+        INSERT INTO mb_yx(`MBNM`, `YXID`, `YXMC`, `UPDATE_TIME`, `SJSJ`, `ZJLJ`, `SLT`, `YXT`, `MZT`, `CJT`, `ZCSJ`, `YYXID`, `RECTIME`, `ZBXLXNM`, `YGTMC`, `PTMC`, `CGQLX`, `TXCPDJ`, `TXHS`, `TXLS`, `XYFBL`, `CXBD`, `TXWS`, `DTTY`, `TXJZXJD`, `TXJZXWD`, `TXZSJJD`, `TXZSJWD`, `TXYXJJD`, `TXYXJWD`, `DWWC`, `SYSJ`, `ZZDW`, `ZZRQ`, `MSXX`)
+        select `MBNM`, `YXID`, `YXMC`, `UPDATE_TIME`, `SJSJ`, `ZJLJ`, `SLT`, `YXT`, `MZT`, `CJT`, `ZCSJ`, `YYXID`, `RECTIME`, `ZBXLXNM`, `YGTMC`, `PTMC`, `CGQLX`, `TXCPDJ`, `TXHS`, `TXLS`, `XYFBL`, `CXBD`, `TXWS`, `DTTY`, `TXJZXJD`, `TXJZXWD`, `TXZSJJD`, `TXZSJWD`, `TXYXJJD`, `TXYXJWD`, `DWWC`, `SYSJ`, `ZZDW`, `ZZRQ`, `MSXX`
+        from mb_yx_zb where id = #{id}
+    </update>
+
+    <select id="selectDownMbYx" resultType="com.geovis.jg.mb.model.SzdqMbYx">
+        select * from mb_yx
+        where MBNM in
+        <foreach collection="ids" item="item" open="(" close=")" separator="," >
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="yxInsertOrUpdate">
+        insert into mb_yx(id,mbnm,yxid,yxmc,update_time,sjsj,mzt,yxt,zjlj,slt) values
+        <foreach collection="list" item="info" separator="," >
+            (#{info.id},#{info.mbnm},#{info.yxid},#{info.yxmc},#{info.update_time},#{info.sjsj},#{info.mzt},#{info.yxt},#{info.zjlj},#{info.slt})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        mbnm = VALUES(mbnm),
+        yxid = VALUES(yxid),
+        yxmc = VALUES(yxmc),
+        update_time = VALUES(update_time),
+        sjsj = VALUES(sjsj),
+        mzt = VALUES(mzt),
+        yxt = VALUES(yxt),
+        zjlj = VALUES(zjlj),
+        slt = VALUES(slt)
+    </insert>
+
+</mapper>

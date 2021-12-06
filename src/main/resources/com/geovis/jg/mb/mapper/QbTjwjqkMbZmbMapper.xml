@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geovis.jg.mb.mapper.QbTjwjqkMbZmbMapper">
+  <resultMap id="BaseResultMap" type="com.geovis.jg.mb.model.QbTjwjqkMbZmb">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="MBNM" jdbcType="VARCHAR" property="mbnm" />
+    <id column="ZMBNM" jdbcType="INTEGER" property="zmbnm" />
+    <result column="ZMBLBNM" jdbcType="VARCHAR" property="zmblbnm" />
+    <result column="SJZMBNM" jdbcType="VARCHAR" property="sjzmbnm" />
+    <result column="MC" jdbcType="VARCHAR" property="mc" />
+    <result column="ZYQK" jdbcType="VARCHAR" property="zyqk" />
+    <result column="SJLY" jdbcType="VARCHAR" property="sjly" />
+    <result column="SJSJ" jdbcType="TIMESTAMP" property="sjsj" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    MBNM, ZMBNM, ZMBLBNM, SJZMBNM, MC, ZYQK, SJLY, SJSJ
+  </sql>
+  <insert id="insertZmbZbSelective">
+    INSERT INTO `qb_tjwjqk_mb_zmb_zb`
+    (`ZMBNM`, `ZBXLXNM`, `JDHZB`, `WDZZB`)
+    VALUES
+    (#{zmbnm},104,#{jdhzb},#{wdzzb});
+  </insert>
+  <insert id="insertZmbInfo" parameterType="com.geovis.jg.mb.model.QbTjwjqkMbZmb" useGeneratedKeys="true" keyProperty="zmbnm" >
+    INSERT INTO `qb_tjwjqk_mb_zmb`(`MBNM`,`zmblbnm`, `MC`, `ZYQK`, `SJSJ`,zznl)
+    VALUES (#{mbnm}, 'D01', #{mc}, #{zyqk},  now(), #{zznl});
+  </insert>
+
+
+  <update id="updateZmbZbByPrimaryKey">
+    UPDATE `qb_tjwjqk_mb_zmb_zb` SET
+    `JDHZB` = #{jdhzb}, `WDZZB` = #{wdzzb}
+    WHERE `ZMBNM` = #{zmbnm}
+  </update>
+  <update id="updateZmbByPrimaryKey">
+    UPDATE qb_tjwjqk_mb_zmb
+    SET  `MC` = #{mc}, `ZYQK` =#{zyqk} ,ZMBLBNM = #{zmblbnm},
+    SJLY = #{sjly}, zznl = #{zznl}
+    WHERE `MBNM` = #{mbnm} AND `ZMBNM` = #{zmbnm}
+  </update>
+  <delete id="deleteZmb">
+    delete from qb_tjwjqk_mb_zmb where mbnm = #{mbnm} and zmbnm=#{zmbnm}
+  </delete>
+  <delete id="deleteZmbzb">
+    delete from qb_tjwjqk_mb_zmb_zb where zmbnm=#{zmbnm}
+  </delete>
+
+  <select id="queryZmbInfo" parameterType="com.geovis.jg.mb.model.QbTjwjqkMbZmb" resultType="com.geovis.jg.mb.model.QbTjwjqkMbZmb">
+  	select a.mbnm,a.zmbnm,a.sjzmbnm,a.zmblbnm, a.mc, a.zyqk, a.sjly,a.sjsj, b.mc as lbmc, c.jdhzb, c.wdzzb, c.gc
+  	from qb_tjwjqk_mb_zmb a, zzbz_s_qb_zmblb b, qb_tjwjqk_mb_zmb_zb c,qb_tjwjqk_mb m
+  	where  a.zmblbnm = b.zmblbnm and  a.mbnm = c.mbnm and  a.zmbnm = c.zmbnm and a.mbnm = m.mbnm
+    and a.mbnm =#{mbnm}
+    <if test="mbmc!=null and mbmc!=''">
+      and m.mbmc like concat('%',#{mbmc},'%')
+    </if>
+    <if test="mbnm!=null and mbnm!=''">
+      and m.mbnm = #{mbnm}
+    </if>
+    <!--from qb_tjwjqk_mb_zmb a left join zzbz_s_qb_zmblb b on a.zmblbnm = b.zmblbnm  left join qb_tjwjqk_mb_zmb_zb c on a.mbnm = c.mbnm  and a.zmbnm = c.zmbnm   -->
+  </select>
+  <select id="getListByMbnm" resultType="com.geovis.jg.mb.model.QbTjwjqkMbZmb">
+    select zmb.*,mb.mbmc,zb.jdhzb,zb.wdzzb from qb_tjwjqk_mb_zmb zmb
+    join qb_tjwjqk_mb mb on zmb.mbnm = mb.mbnm
+    left join qb_tjwjqk_mb_zmb_zb zb on zmb.zmbnm = zb.zmbnm
+    where mb.mbnm =#{mbnm}
+    order by zmb.sjsj desc
+  </select>
+  <select id="getListByMc" resultType="com.geovis.jg.mb.model.QbTjwjqkMbZmb">
+    select zmb.*,mb.mbmc,zb.jdhzb,zb.wdzzb from qb_tjwjqk_mb_zmb zmb
+    join qb_tjwjqk_mb mb on zmb.mbnm = mb.mbnm
+    left join qb_tjwjqk_mb_zmb_zb zb on zmb.zmbnm = zb.zmbnm
+    <where>
+      <if test="mc!=null and mc!=''">
+        and zmb.mc like concat('%',#{mc},'%')
+      </if>
+      <if test="fmc!=null and fmc!=''">
+        and mb.mbmc like concat('%',#{fmc},'%')
+      </if>
+    </where>
+    order by zmb.sjsj desc
+  </select>
+  <select id="getZmbZbByZmbnm" resultType="java.lang.String">
+    select zmbnm from qb_tjwjqk_mb_zmb_zb where zmbnm= #{zmbnm}
+  </select>
+  <select id="getZmbnmByZmbmc" resultType="java.lang.String">
+    select zmbnm from qb_tjwjqk_mb_zmb where mc= #{zmbmc}
+  </select>
+  <select id="exportFileZMb" resultType="com.geovis.jg.mb.model.QbTjwjqkMbZmbExcel">
+    select zmb.*,zmb.mc zmbmc,mb.mbmc,zb.jdhzb,zb.wdzzb from qb_tjwjqk_mb_zmb zmb
+    join qb_tjwjqk_mb mb on zmb.mbnm = mb.mbnm
+    left join qb_tjwjqk_mb_zmb_zb zb on zmb.zmbnm = zb.zmbnm
+    <where>
+      <if test="mc!=null and mc!=''">
+        and zmb.mc like concat('%',#{mc},'%')
+      </if>
+      <if test="fmc!=null and fmc!=''">
+        and mb.mbmc like concat('%',#{fmc},'%')
+      </if>
+    </where>
+    order by zmb.sjsj desc
+  </select>
+  <select id="getTsList" resultType="com.geovis.jg.mb.model.MbTs">
+    select * from mb_ts
+    <where>
+      <if test="mbnm!=null and mbnm!=''">
+        and mbnm = #{mbnm}
+      </if>
+    </where>
+  </select>
+</mapper>

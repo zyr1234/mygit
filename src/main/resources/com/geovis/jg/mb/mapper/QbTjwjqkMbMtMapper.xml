@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geovis.jg.mb.mapper.QbTjwjqkMbMtMapper">
+
+  <update id="mtFileUpdate">
+    update qb_tjwjqk_mb_mt
+    set
+      FXBGNM = #{fxbgnm,jdbcType=INTEGER},
+      MTGSNM = #{mtgsnm,jdbcType=VARCHAR},
+      MTLXNM = #{mtlxnm,jdbcType=VARCHAR},
+      PTMC = #{ptmc,jdbcType=VARCHAR},
+      CGQMC = #{cgqmc,jdbcType=VARCHAR},
+      BLCNM = #{blcnm,jdbcType=VARCHAR},
+      BT = #{bt,jdbcType=VARCHAR},
+      JS = #{js,jdbcType=VARCHAR},
+      ZXDJD = #{zxdjd,jdbcType=VARCHAR},
+      ZXDWD = #{zxdwd,jdbcType=VARCHAR},
+      ZSJJD = #{zsjjd,jdbcType=VARCHAR},
+      ZSJWD = #{zsjwd,jdbcType=VARCHAR},
+      YXJJD = #{yxjjd,jdbcType=VARCHAR},
+      YXJWD = #{yxjwd,jdbcType=VARCHAR},
+      DTTY = #{dtty,jdbcType=VARCHAR},
+      DWWC = #{dwwc,jdbcType=DECIMAL},
+      WJM = #{wjm,jdbcType=VARCHAR},
+      MTSJ = #{mtsj,jdbcType=TIMESTAMP},
+      MTCD = #{mtcd,jdbcType=DECIMAL},
+      path = #{path,jdbcType=VARCHAR},
+      MTDX = #{mtdx,jdbcType=LONGVARBINARY}
+    where MTNM = #{mtnm,jdbcType=INTEGER}
+  </update>
+
+  <select id="queryByMbnmMts" parameterType="com.geovis.jg.mb.model.QbTjwjqkMbMt" resultType="com.geovis.jg.mb.model.QbTjwjqkMbMt">
+  	select * from QB_TJWJQK_MB_MT t
+  	<where>
+      <if test="mbnm !='' and mbnm !=null">
+        and t.mbnm=#{mbnm}
+      </if>
+      <if test="wjm !='' and wjm !=null">
+        and t.wjm like concat('%' ,  #{wjm} , '%')
+      </if>
+    </where>
+  </select>
+  
+  <select id="selectByMtnm" resultType="com.geovis.jg.mb.model.QbTjwjqkMbMt">
+    select t.* from qb_tjwjqk_mb_mt t where t.mtnm=#{mtnm}
+  </select>
+
+  <select id="queryByMtlxmc" resultType="com.geovis.jg.mb.model.QbTjwjqkMbMt">
+    select t.mtnm,t.mbnm,t.fxbgnm,t.mtgsnm,t.mtlxnm,t.ptmc,
+    t.cgqmc,t.blcnm,t.bt,t.js,t.zxdjd,t.zxdwd,t.zsjjd,t.zsjwd,
+    t.yxjjd,t.yxjwd,t.dtty,t.dwwc,t.wjm,t.mtsj,t.mtcd
+    from qb_tjwjqk_mb_mt t
+    join zzbz_s_qb_mtlx m on t.mtlxnm=m.mtlxnm
+    where m.mc like concat('%' ,  #{mtlxmc} , '%')
+    order by t.mtsj desc
+  </select>
+
+  <delete id="deleteByMtnm">
+    delete from qb_tjwjqk_mb_mt where mtnm=#{mtnm}
+  </delete>
+
+  <delete id="deleteMtByMbnm">
+    delete from qb_tjwjqk_mb_mt where mbnm=#{mbnm}
+  </delete>
+
+  <insert id="insertMbMt" parameterType="com.geovis.jg.mb.model.QbTjwjqkMbMt">
+    insert into qb_tjwjqk_mb_mt(mbnm, fxbgnm, mtgsnm, mtlxnm, ptmc, cgqmc, blcnm,
+    bt, js, zxdjd, zxdwd, zsjjd, zsjwd, yxjjd, yxjwd, dtty, dwwc, wjm, mtdx, mtsj, mtcd, path) values(
+    #{mbnm},
+    #{fxbgnm},
+    #{mtgsnm},
+    #{mtlxnm},
+    #{ptmc},
+    #{cgqmc},
+    #{blcnm},
+    #{bt},
+    #{js},
+    #{zxdjd},
+    #{zxdwd},
+    #{zsjjd},
+    #{zsjwd},
+    #{yxjjd},
+    #{yxjwd},
+    #{dtty},
+    #{dwwc},
+    #{wjm},
+    #{mtdx},
+    now(),
+    #{mtcd},
+    #{path});
+  </insert>
+
+</mapper>

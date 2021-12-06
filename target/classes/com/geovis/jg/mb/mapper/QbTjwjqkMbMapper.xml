@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geovis.jg.mb.mapper.QbTjwjqkMbMapper">
+  <resultMap id="BaseResultMap" type="com.geovis.jg.mb.model.QbTjwjqkMb">
+    <id column="MBNM" jdbcType="VARCHAR" property="mbnm" />
+    <result column="MBXH" jdbcType="VARCHAR" property="mbxh" />
+    <result column="MBMC" jdbcType="VARCHAR" property="mbmc" />
+    <result column="MBJC" jdbcType="VARCHAR" property="mbjc" />
+    <result column="SJSJ" jdbcType="TIMESTAMP" property="sjsj"/>
+    <result column="GXSJ" jdbcType="TIMESTAMP" property="gxsj"/>
+    <result column="METAID" jdbcType="VARCHAR" property="metaid"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    MBNM, MBXH, MBMC, MBJC, SJSJ, GXSJ, METAID
+  </sql>
+    <delete id="deleteByMbnm">
+        delete from qb_tjwjqk_mb where mbnm = #{mbnm}
+    </delete>
+    <delete id="deleteZxdzbByMbnm">
+        delete from qb_tjwjqk_mbqk_zxdzb where mbnm = #{mbnm}
+    </delete>
+    <delete id="deleteMbqkByMbnm">
+        delete from qb_tjwjqk_mbqk where mbnm = #{mbnm}
+    </delete>
+    <delete id="deleteTsByMbnm">
+        delete from mb_ts where mbnm = #{mbnm}
+    </delete>
+
+    <!--  查询最大的目标内码 -->
+  <select id="queryMaxMbId" parameterType="com.geovis.jg.mb.model.QbTjwjqkMb" resultType="integer">
+  	select * from (
+		select substr(t.mbnm, 10, 18)  from QB_TJWJQK_MB t where t.mbnm like concat(substr(#{gjdqnm}, 1, 4),'%') order by  substr(t.mbnm, 12, 18) desc
+	) mb limit 1
+  </select>
+  
+
+    <select id="getAllZlMap" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqkSxDto">
+        select mbzlnm sxnm, mc sxmc from ZZBZ_S_QB_MBZL
+    </select>
+    <select id="getAllDjMap" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqkSxDto">
+        select mbdjnm sxnm, mc sxmc from ZZBZ_S_MB_DJ
+    </select>
+    <select id="getAllMgsxMap" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqkSxDto">
+        select mgsxnm sxnm, mc sxmc from ZZBZ_S_QB_MGSX
+    </select>
+    <select id="getAllQbdwMap" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqkSxDto">
+        select qbdwnm sxnm, mc sxmc from ZZBZ_S_QB_TGDW
+    </select>
+    <select id="getAllGjdqMap" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqkSxDto">
+        select gjdqnm sxnm, mc sxmc from ZZBZ_S_TY_GJ
+    </select>
+    <select id="getAllmbztMap" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqkSxDto">
+        select mbztnm sxnm, mc sxmc from ZZBZ_S_QB_MBZT
+    </select>
+    <select id="getAllZbxlxMap" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqkSxDto">
+        select zbxlxnm sxnm, mc sxmc from zzbz_s_qb_zbxlx
+    </select>
+    <select id="getMbnmByMbmc" resultType="java.lang.String" parameterType="java.lang.String">
+        select mbnm from qb_tjwjqk_mb mb where mb.mbmc = #{mbmc}
+    </select>
+
+    <insert id="insertOrUpdate" parameterType="com.geovis.jg.mb.model.QbTjwjqkMbqkImExcel">
+        insert into qb_tjwjqk_mbqk
+        (`MBNM`, `MBZLNM`, `MBDJNM`, `MGSXNM`, `QBDWNM`, `GJDQNM`, `MBZTNM`,
+        `MBFWC`, `MBFWK`, `MBMJ`, `MBZXDWD`, `SSMBQ`, `MBGK`, `ZYQK`,
+        `ZCFB`, `JGXZ`, `YHBW`, `DWZY`, `DXHJ`, `FYSS`, `ZBSM`, `DWJD`,
+        `FSSJ`, `FSZZSJ`, `FXSJ`, `FXZZSJ`, `SJLY`, `SJSJ`, `NLGS`,`qxsw`)
+        values
+        <foreach collection="list" item="info" separator="," >
+            (#{info.mbnm}, #{info.mbzlnm}, #{info.mbdjnm}, #{info.mgsxnm}, #{info.qbdwnm}, #{info.gjdqnm}, #{info.mbztnm},
+            #{info.mbfwc}, #{info.mbfwk}, #{info.mbmj}, #{info.mbzxdwd}, #{info.ssmbq}, #{info.mbgk}, #{info.zyqk},
+            #{info.zcfb}, #{info.jgxz}, #{info.yhbw}, #{info.dwzy}, #{info.dxhj}, #{info.fyss}, #{info.zbsm}, #{info.dwjd},
+            #{info.fssj}, #{info.fszzsj}, #{info.fxsj}, #{info.fxzzsj}, #{info.sjly}, now(), #{info.nlgs},#{info.qxsw})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        mbzlnm = VALUES(mbzlnm),
+        mbdjnm = VALUES(mbdjnm),
+        mgsxnm = VALUES(mgsxnm),
+        qbdwnm = VALUES(qbdwnm),
+        gjdqnm = VALUES(gjdqnm),
+        mbztnm = VALUES(mbztnm),
+        mbfwc = VALUES(mbfwc),
+        mbfwk = VALUES(mbfwk),
+        mbmj = VALUES(mbmj),
+        mbzxdwd = VALUES(mbzxdwd),
+        ssmbq = VALUES(ssmbq),
+        mbgk = VALUES(mbgk),
+        zyqk = VALUES(zyqk),
+        zcfb = VALUES(zcfb),
+        jgxz = VALUES(jgxz),
+        yhbw = VALUES(yhbw),
+        dwzy = VALUES(dwzy),
+        dxhj = VALUES(dxhj),
+        fyss = VALUES(fyss),
+        zbsm = VALUES(zbsm),
+        dwjd = VALUES(dwjd),
+        fssj = VALUES(fssj),
+        fszzsj = VALUES(fszzsj),
+        fxsj = VALUES(fxsj),
+        fxzzsj = VALUES(fxzzsj),
+        sjly = VALUES(sjly),
+        sjsj = VALUES(sjsj),
+        nlgs = VALUES(nlgs),
+        qxsw = VALUES(qxsw)
+    </insert>
+
+    <insert id="insertOrUpdateZxzb" parameterType="com.geovis.jg.mb.model.QbTjwjqkMbqkImExcel">
+        insert into qb_tjwjqk_mbqk_zxdzb
+        (`MBNM`, `ZBXLXNM`, `JDHZB`, `WDZZB`, `GC`, `DWWC`, `GWC`)
+        values
+        <foreach collection="list" item="info" separator=",">
+            (#{info.mbnm},104,#{info.jdhzb},#{info.wdzzb},#{info.gc},#{info.dwwc},#{info.gwc})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        zbxlxnm = 104,
+        jdhzb = VALUES(jdhzb),
+        wdzzb = VALUES(wdzzb),
+        gc = VALUES(gc),
+        dwwc = VALUES(dwwc),
+        gwc = VALUES(gwc)
+    </insert>
+
+    <select id="getMbDetailExcel" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqkImExcel" parameterType="com.geovis.jg.mb.model.QbTjwjqkMb">
+        select mbgk,dj.mc mbdjnm,x.mc mgsxnm,zl.mc mbzlnm,gj.mc gjdqnm,zt.mc mbztnm,mbfwc,mbfwk,mbmj,mbzxdwd,
+        ssmbq,dwjd,fssj,fszzsj,fxsj,fxzzsj,sjly,dw.mc qbdwnm,m.sjsj,zyqk,zcfb,jgxz,yhbw,dwzy,dxhj,fyss,zbsm,mbxh,m.mbmc mbmc,mbjc,
+        t.mbzlnm,t.mbdjnm,t.mgsxnm,t.qbdwnm,t.gjdqnm,t.mbztnm,t.nlgs,zbx.mc zbxlxnm,zxd.jdhzb,zxd.wdzzb,zxd.gc,t.qxsw
+        from QB_TJWJQK_MBQK t
+        left join QB_TJWJQK_MB m on m.mbnm = t.mbnm
+        left join ZZBZ_S_QB_MBZL zl on zl.mbzlnm = t.mbzlnm
+        left join ZZBZ_S_QB_MGSX x on x.mgsxnm = t.mgsxnm
+        left join ZZBZ_S_QB_TGDW dw on dw.qbdwnm = t.qbdwnm
+        left join ZZBZ_S_TY_GJ gj on t.gjdqnm = gj.gjdqnm
+        left join ZZBZ_S_QB_MBZT zt on zt.mbztnm = t.mbztnm
+        left join ZZBZ_S_MB_DJ dj on t.mbdjnm=dj.mbdjnm
+        left join qb_tjwjqk_mbqk_zxdzb zxd on t.mbnm = zxd.mbnm
+        left join zzbz_s_qb_zbxlx zbx on zxd.zbxlxnm = zbx.zbxlxnm
+        <where>
+            <if test="mbmc!=null and mbmc!=''">
+                and m.mbmc like concat('%',#{mbmc},'%')
+            </if>
+            <if test="mbnm!=null and mbnm!=''">
+                and m.mbnm = #{mbnm}
+            </if>
+        </where>
+        order by m.mbxh asc
+    </select>
+    <select id="getMBInfoByMbnm" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqk">
+        select mb.MBMC mbmc,gj.MC gjdqmc  from qb_tjwjqk_mb mb
+        left join qb_tjwjqk_mbqk qk on mb.mbnm = qk.mbnm
+        left join zzbz_s_ty_gj gj on qk.GJDQNM = gj.GJDQNM
+        where mb.mbnm = #{mbnm}
+    </select>
+
+
+    <select id="queryList" resultType="com.geovis.jg.mb.model.QbTjwjqkMb">
+        select * from qb_tjwjqk_mb
+        <where>
+            <if test="mc!='' and mc!=null">
+                and MBMC like concat('%', #{mc} , '%')
+            </if>
+        </where>
+    </select>
+    <select id="getTsList" resultType="com.geovis.jg.mb.model.MbTsExcel">
+        select ts.*,mb.mbmc from mb_ts ts
+        left join qb_tjwjqk_mb mb on ts.mbnm = mb.mbnm
+        <where>
+            <if test="mbnm!=null and mbnm!=''">
+                and ts.mbnm = #{mbnm}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insertOrUpdateMbzml" parameterType="com.geovis.jg.mb.model.QbTjwjqkMbZmlImExcel">
+        insert into qb_tjwjqk_mbqk
+        (`MBNM`, `MBZLNM`, `GJDQNM`)
+        values
+        <foreach collection="list" item="info" separator="," >
+            (#{info.mbnm}, #{info.mbzlnm}, #{info.gjdqnm})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        mbzlnm = VALUES(mbzlnm),
+        gjdqnm = VALUES(gjdqnm)
+    </insert>
+
+
+    <insert id="insertOrUpdateZxzbMbzml" parameterType="com.geovis.jg.mb.model.QbTjwjqkMbZmlImExcel">
+        insert into qb_tjwjqk_mbqk_zxdzb
+        (`MBNM`, `ZBXLXNM`, `JDHZB`, `WDZZB`)
+        values
+        <foreach collection="list" item="info" separator=",">
+            (#{info.mbnm},104,#{info.jdhzb},#{info.wdzzb})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        jdhzb = VALUES(jdhzb),
+        wdzzb = VALUES(wdzzb)
+    </insert>
+
+    <insert id="insterMb">
+        insert into qb_tjwjqk_mb (MBNM, MBMC, SJSJ, GXSJ, is_move)
+        values (#{mbnm,jdbcType=VARCHAR},  #{mbmc,jdbcType=VARCHAR},
+          now(), now(),
+          #{isMove,jdbcType=BIT})
+    </insert>
+
+    <insert id="insterMbVo">
+        insert into qb_tjwjqk_mb (MBNM, MBXH, MBMC,
+          MBJC, SJSJ, GXSJ,
+          is_move)
+        values (#{mbnm,jdbcType=VARCHAR}, #{mbxh,jdbcType=VARCHAR}, #{mbmc,jdbcType=VARCHAR},
+          #{mbjc,jdbcType=VARCHAR}, #{sjsj,jdbcType=TIMESTAMP}, #{gxsj,jdbcType=TIMESTAMP},
+          #{isMove,jdbcType=BIT})
+    </insert>
+    <insert id="insterMbTs">
+        insert into mb_ts (jlid, mbnm,
+          zzsj, jdhzb, wdzzb,
+          bz, yssjb, sjsj,
+          sjly)
+        values (#{jlid,jdbcType=VARCHAR}, #{mbnm,jdbcType=VARCHAR},
+          #{zzsj,jdbcType=VARCHAR}, #{jdhzb,jdbcType=VARCHAR}, #{wdzzb,jdbcType=VARCHAR},
+          #{bz,jdbcType=VARCHAR}, #{yssjb,jdbcType=VARCHAR}, #{sjsj,jdbcType=TIMESTAMP},
+          #{sjly,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="insertOrUpdateMbInfozml">
+        update qb_tjwjqk_mb
+        set `MBMC` = #{mbmc},
+        GXSJ = now(),
+        is_move = #{isMove}
+         where mbnm = #{mbnm}
+    </update>
+
+</mapper>

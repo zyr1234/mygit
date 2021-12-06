@@ -1,0 +1,55 @@
+server:
+  port: 20010
+  servlet:
+    context-path: /epzh
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    #password: Zp202107!
+    password: root
+    url: jdbc:mysql://localhost:3306/mbbase_zcnh?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1024MB
+      max-request-size: 1000MB
+    http:
+      encoding:
+        force: true
+        charset: UTF-8
+    jackson:
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: GMT+8
+  rabbitmq:
+    host: 172.20.10.2
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: zcnh_mb_test
+
+
+logging:
+  level:
+    root: debug
+  file:
+    name: /log/my.log
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+#文件服务器文件地址
+base:
+  path: "/home/lqzz/databases/mysql/files"
+  tifpath: "http://192.168.140.81:20011/"
+
+#gdal服务ip地址
+tifTojpg:
+  ipAddress: 192.168.140.95
+  userName: root
+  password: geovis123
+#udp
+udpPort: 8081
+
+#zcnh

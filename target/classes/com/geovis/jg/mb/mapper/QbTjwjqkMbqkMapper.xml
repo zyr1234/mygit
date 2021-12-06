@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geovis.jg.mb.mapper.QbTjwjqkMbqkMapper">
+  <resultMap id="BaseResultMap" type="com.geovis.jg.mb.model.QbTjwjqkMbqk">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="MBNM" jdbcType="VARCHAR" property="mbnm" />
+    <result column="MBZLNM" jdbcType="VARCHAR" property="mbzlnm" />
+    <result column="MBDJNM" jdbcType="VARCHAR" property="mbdjnm" />
+    <result column="MGSXNM" jdbcType="VARCHAR" property="mgsxnm" />
+    <result column="QBDWNM" jdbcType="VARCHAR" property="qbdwnm" />
+    <result column="GJDQNM" jdbcType="VARCHAR" property="gjdqnm" />
+    <result column="MBZTNM" jdbcType="VARCHAR" property="mbztnm" />
+    <result column="MBFWC" jdbcType="DECIMAL" property="mbfwc" />
+    <result column="MBFWK" jdbcType="DECIMAL" property="mbfwk" />
+    <result column="MBMJ" jdbcType="DECIMAL" property="mbmj" />
+    <result column="MBZXDWD" jdbcType="VARCHAR" property="mbzxdwd" />
+    <result column="SSMBQ" jdbcType="VARCHAR" property="ssmbq" />
+    <result column="MBGK" jdbcType="VARCHAR" property="mbgk" />
+    <result column="ZYQK" jdbcType="VARCHAR" property="zyqk" />
+    <result column="ZCFB" jdbcType="VARCHAR" property="zcfb" />
+    <result column="JGXZ" jdbcType="VARCHAR" property="jgxz" />
+    <result column="YHBW" jdbcType="VARCHAR" property="yhbw" />
+    <result column="DWZY" jdbcType="VARCHAR" property="dwzy" />
+    <result column="DXHJ" jdbcType="VARCHAR" property="dxhj" />
+    <result column="FYSS" jdbcType="VARCHAR" property="fyss" />
+    <result column="ZBSM" jdbcType="VARCHAR" property="zbsm" />
+    <result column="DWJD" jdbcType="DECIMAL" property="dwjd" />
+    <result column="FSSJ" jdbcType="TIMESTAMP" property="fssj" />
+    <result column="FSZZSJ" jdbcType="TIMESTAMP" property="fszzsj" />
+    <result column="FXSJ" jdbcType="TIMESTAMP" property="fxsj" />
+    <result column="FXZZSJ" jdbcType="TIMESTAMP" property="fxzzsj" />
+    <result column="SJLY" jdbcType="VARCHAR" property="sjly" />
+    <result column="SJSJ" jdbcType="TIMESTAMP" property="sjsj" />
+    <result column="NLGS" jdbcType="VARCHAR" property="nlgs" />
+	<result column="MBXH" jdbcType="VARCHAR" property="mbxh" />
+	<result column="MBMC" jdbcType="VARCHAR" property="mbmc" />
+	<result column="MBJC" jdbcType="VARCHAR" property="mbjc" />
+  </resultMap>
+	<insert id="insertMbFjSx" parameterType="com.geovis.jg.mb.model.ExtensionJsonTab" useGeneratedKeys="true" keyProperty="id" >
+		insert into extension_json_tab (type, json_content,
+		  str_content)
+		values (#{type,jdbcType=TINYINT}, #{jsonContent,jdbcType=CHAR},
+		  #{jsonListString})
+	</insert>
+	<update id="updateJsonIdByNm">
+		update qb_tjwjqk_mbqk set extension_json_id = #{jsonId} where mbnm = #{mbnm}
+	</update>
+	<update id="updateMbFjSx">
+		update extension_json_tab
+    	set str_content = #{jsonListString}
+      	where id = #{id,jdbcType=BIGINT}
+	</update>
+	<delete id="deleteMbFjSx">
+		delete from extension_json_tab where id = #{jsonId}
+	</delete>
+
+
+	<!-- 获取目标表下的所有国家地区 -->
+   <select id="mbqkInfo" parameterType="com.geovis.jg.mb.model.QbTjwjqkMbqk" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqk" >
+		select 
+	       m.mbnm, m.mbxh, m.mbmc, m.mbjc, t.mbzlnm, t.mbdjnm, t.mgsxnm, t.qbdwnm, t.gjdqnm, t.mbztnm,
+	       t.nlgs   nlgs, zl.mc     mbzlmc, x.mc      mgsxmc, dw.mc     qbdwmc, gj.mc     gjdqmc, zt.mc     mbztmc,
+	       dj.mc     mbdjmc, t.mbfwc, t.mbfwk, t.mbmj, t.mbzxdwd,t.ssmbq,t.mbgk,t.zyqk,t.zcfb,t.jgxz,t.yhbw,t.dwzy,t.dxhj,
+	       t.fyss, t.zbsm, t.dwjd, t.fssj, t.fszzsj, t.fxsj, t.fxzzsj, t.sjly, t.sjsj, t.qxsw, m.is_move, zxd.jdhzb, zxd.wdzzb
+	  from QB_TJWJQK_MB m
+	  left join QB_TJWJQK_MBQK t on m.mbnm = t.mbnm
+	  left join ZZBZ_S_QB_MBZL zl on zl.mbzlnm = t.mbzlnm
+	  left join ZZBZ_S_QB_MGSX x on x.mgsxnm = t.mgsxnm
+	  left join ZZBZ_S_QB_TGDW dw on dw.qbdwnm = t.qbdwnm
+	  left join ZZBZ_S_TY_GJ gj on t.gjdqnm = gj.gjdqnm
+	  left join ZZBZ_S_QB_MBZT zt on zt.mbztnm = t.mbztnm
+	  left join ZZBZ_S_MB_DJ dj on t.mbdjnm=dj.mbdjnm
+	  left join qb_tjwjqk_mbqk_zxdzb zxd on t.mbnm = zxd.mbnm
+	 where m.mbnm = #{mbnm}
+	  limit 1
+   </select>
+
+	<select id="listAllInfo" resultMap="BaseResultMap">
+		select m.mbnm,mbgk,dj.mc mbdjmc,x.mc mgsxmc,zl.mc mbzlmc,gj.mc gjdqmc,zt.mc mbztmc,mbfwc,mbfwk,mbmj,mbzxdwd,ssmbq,dwjd,fssj,fszzsj,fxsj,fxzzsj,sjly,dw.mc qbdwmc,m.sjsj,zyqk,zcfb,jgxz,yhbw,dwzy,dxhj,fyss,zbsm,mbxh,m.mbmc,mbjc
+		from QB_TJWJQK_MB m
+		left join QB_TJWJQK_MBQK t on m.mbnm = t.mbnm
+		left join ZZBZ_S_QB_MBZL zl on zl.mbzlnm = t.mbzlnm
+		left join ZZBZ_S_QB_MGSX x on x.mgsxnm = t.mgsxnm
+		left join ZZBZ_S_QB_TGDW dw on dw.qbdwnm = t.qbdwnm
+		left join ZZBZ_S_TY_GJ gj on t.gjdqnm = gj.gjdqnm
+		left join ZZBZ_S_QB_MBZT zt on zt.mbztnm = t.mbztnm
+		left join ZZBZ_S_MB_DJ dj on t.mbdjnm=dj.mbdjnm
+		<where>
+			<if test="mbxh!=null and mbxh!=''">
+				and m.mbxh like concat(#{mbxh},'%')
+			</if>
+			<if test="mbnm!=null and mbnm!=''">
+				and m.mbnm = #{mbnm}
+			</if>
+		</where>
+		order by m.mbxh asc
+	</select>
+
+	<select id="mbqkAllInfo" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqk">
+	   select t.*,m.mbmc,z.MC as mbzlmc,g.MC as gjdqmc,q.JDHZB,q.WDZZB,q.GC from QB_TJWJQK_MBQK t 
+	   join qb_tjwjqk_mb m on m.mbnm=t.mbnm 
+	   join zzbz_s_qb_mbzl z on z.MBZLNM=t.MBZLNM 
+	   join zzbz_s_ty_gj g on g.GJDQNM=t.GJDQNM
+	   join qb_tjwjqk_mbqk_zxdzb q on q.mbnm=t.mbnm
+	</select>
+
+   <!-- 2021/4/10新增：查询目标情况详情，2021-05-27 目标种类和国家地区修改为模糊查询 -->
+  <select id="getMbqkAllInfo" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqk">
+	  select m.mbnm,mbgk,dj.mc mbdjmc,x.mc mgsxmc,zl.mc mbzlmc,gj.mc gjdqmc,zt.mc mbztmc,mbfwc,mbfwk,mbmj,mbzxdwd,
+	  ssmbq,dwjd,fssj,fszzsj,fxsj,fxzzsj,sjly,dw.mc qbdwmc,m.sjsj,zyqk,zcfb,jgxz,yhbw,dwzy,dxhj,fyss,zbsm,mbxh,m.mbmc,mbjc,
+	  t.mbzlnm,t.mbdjnm,t.mgsxnm,t.qbdwnm,t.gjdqnm,t.mbztnm,t.nlgs,zbx.mc zbxmc,zxd.jdhzb,zxd.wdzzb,zxd.gc,t.qxsw,m.is_move
+	  from QB_TJWJQK_MBQK t
+	  left join QB_TJWJQK_MB m on m.mbnm = t.mbnm
+	  left join ZZBZ_S_QB_MBZL zl on zl.mbzlnm = t.mbzlnm
+	  left join ZZBZ_S_QB_MGSX x on x.mgsxnm = t.mgsxnm
+	  left join ZZBZ_S_QB_TGDW dw on dw.qbdwnm = t.qbdwnm
+	  left join ZZBZ_S_TY_GJ gj on t.gjdqnm = gj.gjdqnm
+	  left join ZZBZ_S_QB_MBZT zt on zt.mbztnm = t.mbztnm
+	  left join ZZBZ_S_MB_DJ dj on t.mbdjnm=dj.mbdjnm
+	  left join qb_tjwjqk_mbqk_zxdzb zxd on t.mbnm = zxd.mbnm
+	  left join zzbz_s_qb_zbxlx zbx on zxd.zbxlxnm = zbx.zbxlxnm
+	  <where>
+		  <if test="record.mbmc!=null and record.mbmc!=''">
+			  and m.mbmc like concat('%',#{record.mbmc},'%')
+		  </if>
+		  <if test="record.mbnm!=null and record.mbnm!=''">
+			  and m.mbnm = #{record.mbnm}
+		  </if>
+		  <if test="record.mbzlnm!=null and record.mbzlnm!=''">
+			  and t.mbzlnm  like concat(#{record.mbzlnm},'%')
+		  </if>
+		  <if test="record.gjdqnm!=null and record.gjdqnm!=''">
+			  and t.gjdqnm  like concat(#{record.gjdqnm},'%')
+		  </if>
+		  <if test="startdate!=null">
+			  and t.sjsj &gt;= DATE_FORMAT(#{startdate},"%y-%M-%d %h:%m:%s")
+		  </if>
+		  <if test="enddate!=null">
+			  and t.sjsj &lt;= DATE_FORMAT(#{enddate},"%y-%M-%d %h:%m:%s")
+		  </if>
+	  </where>
+	  order by m.SJSJ desc
+  </select>
+
+    <select id="mbgjdqAllInfo" resultType="com.geovis.jg.mb.model.ZzbzSTyGj">
+		select * from zzbz_s_ty_gj
+		<where>
+			<if test="nm == null">
+				and  LENGTH(GJDQNM) = 2
+			</if>
+			<if test="nm != null and nm != ''">
+				and LEFT(GJDQNM,2) = #{nm}  and GJDQNM != #{nm}
+			</if>
+		</where>
+	</select>
+	<select id="mbzlAllInfoMyNm" resultType="com.geovis.jg.mb.model.ZzbzSQbMbzl">
+		select * from zzbz_s_qb_mbzl
+		<where>
+			<if test='cj == "1"'>
+				and  LENGTH(MBZLNM) = 2
+			</if>
+			<if test='cj == "2"'>
+				and LENGTH(MBZLNM) = 4 and LEFT(MBZLNM,2) = #{nm}  and MBZLNM != #{nm}
+			</if>
+			<if test='cj == "3"'>
+				and LENGTH(MBZLNM) = 6 and LEFT(MBZLNM,4) = #{nm}  and MBZLNM != #{nm}
+			</if>
+		</where>
+	</select>
+
+
+	<select id="getMbList" resultType="com.geovis.jg.qt.model.QtTjwjqkMbDto">
+		select m.MBNM, m.MBXH, m.MBMC, m.MBJC, m.SJSJ, m.GXSJ,z.mbzlnm,z.mc mbzlmc,g.gjdqnm,g.mc gjdqmc,q.jdhzb,q.wdzzb,q.gc,
+		 case 	when m.is_move = 1 then 'true'
+		 		when m.is_move = 0 then 'false' end isMove
+		 from QB_TJWJQK_MBQK t
+		left join qb_tjwjqk_mb m on m.mbnm=t.mbnm
+		left join zzbz_s_qb_mbzl z on z.MBZLNM=t.MBZLNM
+		left join zzbz_s_ty_gj g on g.GJDQNM=t.GJDQNM
+		left join qb_tjwjqk_mbqk_zxdzb q on q.mbnm=t.mbnm
+	</select>
+	<select id="mbqkAllInfoFoQt" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqk">
+		select t.*,m.*,z.mc mbzlmc,g.mc gjdqmc   from QB_TJWJQK_MBQK t
+		left join qb_tjwjqk_mb m on m.mbnm=t.mbnm
+		left join zzbz_s_qb_mbzl z on z.MBZLNM=t.MBZLNM
+		left join zzbz_s_ty_gj g on g.GJDQNM=t.GJDQNM
+		left join qb_tjwjqk_mbqk_zxdzb q on q.mbnm=t.mbnm
+		where 1=1
+		<if test="mbId!=null and mbId!=''">
+			and m.mbnm = #{mbId}
+		</if>
+	</select>
+	<select id="getMbAttachList" resultType="com.geovis.jg.mb.model.QbTjwjqkMbMt">
+		select * from qb_tjwjqk_mb_mt
+		<where>
+			<if test="mbnm!=null and mbnm!=''">
+				and mbnm = #{mbnm}
+			</if>
+		</where>
+	</select>
+
+    <select id="getMbCountByTime" resultType="com.alibaba.fastjson.JSONObject">
+		select
+		(select count(0) from qb_tjwjqk_mb
+		<where>
+			<if test="startTime!=null and startTime != ''">
+				and SJSJ >= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime != ''">
+				and SJSJ &lt;= #{endTime}
+			</if>
+
+		</where>
+		) createCount,
+		(select count(0) from qb_tjwjqk_mb
+		<where>
+			<if test="startTime!=null and startTime != ''">
+				and GXSJ >= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime != ''">
+				and GXSJ &lt;= #{endTime}
+			</if>
+		</where>
+		) updateCount
+	</select>
+	<select id="exactQueryMbList" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqk">
+		select t.*,m.mbmc,z.MC as mbzlmc,g.MC as gjdqmc,q.JDHZB,q.WDZZB,q.GC from QB_TJWJQK_MBQK t
+	   left join qb_tjwjqk_mb m on m.mbnm=t.mbnm
+	   left join zzbz_s_qb_mbzl z on z.MBZLNM=t.MBZLNM
+	   left join zzbz_s_ty_gj g on g.GJDQNM=t.GJDQNM
+	   left join qb_tjwjqk_mbqk_zxdzb q on q.mbnm=t.mbnm
+	   <where>
+		   <if test="mbMc!=null and mbMc!= ''">
+			   and m.mbmc = #{mbMc}
+		   </if>
+		   <if test="zlMc!=null and zlMc!= ''">
+			   and z.mc  = #{zlMc}
+		   </if>
+		   <if test="gjdqMc!=null and gjdqMc!= ''">
+			   and g.mc  = #{gjdqMc}
+		   </if>
+		   <if test="mbgk!=null and mbgk!= ''">
+			   and t.mbgk = #{mbgk}
+		   </if>
+		   <if test="zyqk!=null and  zyqk!= ''">
+			   and t.zyqk = #{zyqk}
+		   </if>
+		   <if test="dwzy!=null and dwzy!= ''">
+			   and t.dwzy = #{dwzy}
+		   </if>
+		   <if test="fyss!=null and fyss!= ''">
+			   and t.fyss = #{fyss}
+		   </if>
+		   <if test="zcfb!=null and zcfb!= ''">
+			   and t.zcfb = #{zcfb}
+		   </if>
+		   <if test="qxsw!=null and qxsw!= ''">
+			   and t.qxsw = #{qxsw}
+		   </if>
+		   <if test="dxhj!=null and dxhj!= ''">
+			   and t.dxhj = #{dxhj}
+		   </if>
+		   <if test="jgxz!=null and jgxz!= ''">
+			   and t.jgxz = #{jgxz}
+		   </if>
+		   <if test="yhbw!=null and yhbw!= ''">
+			   and t.yhbw = #{yhbw}
+		   </if>
+
+
+		   <if test="likeMbMc!=null and likeMbMc!= ''">
+			   and m.mbmc like concat('%', #{likeMbMc}, '%')
+		   </if>
+		   <if test="likeZlMc!=null and likeZlMc!= ''">
+			   and z.mc like concat('%', #{likeZlMc}, '%')
+		   </if>
+		   <if test="likeGjdqMc!=null and likeGjdqMc!= ''">
+			   and g.mc like concat('%', #{likeGjdqMc}, '%')
+		   </if>
+		   <if test="likeMbgk!=null and likeMbgk!= ''">
+			   and t.mbgk like concat('%', #{likeMbgk}, '%')
+		   </if>
+		   <if test="likeZyqk!=null and  likeZyqk!= ''">
+			   and t.zyqk like concat('%', #{likeZyqk}, '%')
+		   </if>
+		   <if test="likeDwzy!=null and likeDwzy!= ''">
+			   and t.dwzy like concat('%', #{likeDwzy}, '%')
+		   </if>
+		   <if test="likeFyss!=null and likeFyss!= ''">
+			   and t.fyss like concat('%', #{likeFyss}, '%')
+		   </if>
+		   <if test="likeZcfb!=null and likeZcfb!= ''">
+			   and t.zcfb like concat('%', #{likeZcfb}, '%')
+		   </if>
+		   <if test="likeQxsw!=null and likeQxsw!= ''">
+			   and t.qxsw like concat('%', #{likeQxsw}, '%')
+		   </if>
+		   <if test="likeDxhj!=null and likeDxhj!= ''">
+			   and t.dxhj like concat('%', #{likeDxhj}, '%')
+		   </if>
+		   <if test="likeJgxz!=null and likeJgxz!= ''">
+			   and t.jgxz like concat('%', #{likeJgxz}, '%')
+		   </if>
+		   <if test="likeYhbw!=null and likeYhbw!= ''">
+			   and t.yhbw like concat('%', #{likeYhbw}, '%')
+		   </if>
+	   </where>
+	</select>
+	<select id="likeQueryMbList" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqk">
+		select t.*,m.mbmc,z.MC as mbzlmc,g.MC as gjdqmc,q.JDHZB,q.WDZZB,q.GC from QB_TJWJQK_MBQK t
+	   left join qb_tjwjqk_mb m on m.mbnm=t.mbnm
+	   left join zzbz_s_qb_mbzl z on z.MBZLNM=t.MBZLNM
+	   left join zzbz_s_ty_gj g on g.GJDQNM=t.GJDQNM
+	   left join qb_tjwjqk_mbqk_zxdzb q on q.mbnm=t.mbnm
+	   <where>
+
+	   </where>
+	</select>
+	<select id="getMbMtlx" resultType="com.geovis.jg.mb.model.ZzbzSQbMtlx">
+		select * from zzbz_s_qb_mtlx
+	</select>
+	<select id="getMbMtgs" resultType="com.geovis.jg.mb.model.ZzbzSQbMtgs">
+		select * from zzbz_s_qb_mtgs
+	</select>
+    <select id="getMbZbx" resultType="com.geovis.jg.mb.model.ZzbzSQbZbxlx">
+		select * from zzbz_s_qb_zbxlx
+	</select>
+	<select id="getMbListByMbnm" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqk">
+		select * from qb_tjwjqk_mb where mbnm = #{mbnm}
+	</select>
+    <select id="getMbFjSx" resultType="com.geovis.jg.mb.model.ExtensionJsonTab">
+		select *,str_content jsonListString from extension_json_tab where id = #{jsonId}
+	</select>
+	<select id="getMbFjSxByMbnm" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqk">
+		select * from QB_TJWJQK_MBQK where mbnm = #{mbnm}
+	</select>
+</mapper>

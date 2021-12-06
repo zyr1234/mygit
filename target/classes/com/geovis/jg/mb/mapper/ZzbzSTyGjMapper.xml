@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geovis.jg.mb.mapper.ZzbzSTyGjMapper">
+
+    <insert id="addGjdq">
+        INSERT INTO zzbz_s_ty_gj(`GJDQNM`, `XH`, `MC`, `SD`)
+        VALUES (#{gjdqnm}, #{xh}, #{mc}, #{sd})
+    </insert>
+
+    <insert id="addMbzl">
+        INSERT INTO zzbz_s_qb_mbzl(`MBZLNM`, `XH`, `MC`)
+        VALUES (#{mbzlnm}, #{xh}, #{mc});
+    </insert>
+
+    <update id="updateGjdq">
+        UPDATE zzbz_s_ty_gj
+        SET XH = #{xh},`MC` = #{mc}, `SD` = #{sd}
+        WHERE `GJDQNM` = #{gjdqnm}
+    </update>
+
+    <update id="updateMbzl">
+        UPDATE zzbz_s_qb_mbzl
+        SET `XH` = #{xh}, `MC` = #{mc}
+        WHERE `MBZLNM` = #{mbzlnm}
+    </update>
+
+    <delete id="deleteGjdq">
+        delete from ZZBZ_S_TY_GJ where `GJDQNM` = #{gjdqnm}
+    </delete>
+
+    <delete id="deleteMbzl">
+        delete from zzbz_s_qb_mbzl where `MBZLNM` = #{mbzlnm}
+    </delete>
+
+  <select id="queryByGjdqnm" resultType="com.geovis.jg.mb.model.ZzbzSTyGj">
+   select * from ZZBZ_S_TY_GJ t where 1=1
+      <if test="gjdqnm!='' and gjdqnm!=null">
+          and t.gjdqnm = #{gjdqnm}
+      </if>
+      <if test="mc!='' and mc!=null">
+          and t.mc like concat('%', #{mc} , '%')
+      </if>
+  </select>
+
+    <select id="queryZlList" resultType="com.geovis.jg.mb.model.ZzbzSQbMbzl">
+        select * from zzbz_s_qb_mbzl t where 1=1
+        <if test="mc!='' and mc!=null">
+            and t.mc like concat('%', #{mc} , '%')
+        </if>
+    </select>
+
+</mapper>

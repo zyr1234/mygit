@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geovis.jg.mb.mapper.MbDownLoadMapper">
+
+
+  <insert id="mbInsertOrUpdate">
+    INSERT INTO qb_tjwjqk_mb
+    (`MBNM`, `MBXH`, `MBMC`, `MBJC`, `SJSJ`, `GXSJ`, `metaid`) VALUES
+    <foreach collection="list" item="info" separator="," >
+      (#{info.mbnm},#{info.mbxh},#{info.mbmc},#{info.mbjc},#{info.sjsj},#{info.gxsj},#{info.metaid})
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    mbnm = VALUES(mbnm),
+    mbxh = VALUES(mbxh),
+    mbmc = VALUES(mbmc),
+    mbjc = VALUES(mbjc),
+    sjsj = VALUES(sjsj),
+    gxsj = VALUES(gxsj),
+    metaid = VALUES(metaid)
+  </insert>
+
+  <insert id="qkInsertOrUpdate">
+    insert into qb_tjwjqk_mbqk
+    (`MBNM`, `MBZLNM`, `MBDJNM`, `MGSXNM`, `QBDWNM`, `GJDQNM`, `MBZTNM`,
+    `MBFWC`, `MBFWK`, `MBMJ`, `MBZXDWD`, `SSMBQ`, `MBGK`, `ZYQK`,
+    `ZCFB`, `JGXZ`, `YHBW`, `DWZY`, `DXHJ`, `FYSS`, `ZBSM`, `DWJD`,
+    `FSSJ`, `FSZZSJ`, `FXSJ`, `FXZZSJ`, `SJLY`, `SJSJ`, `NLGS`,`qxsw`)
+    values
+    <foreach collection="list" item="info" separator="," >
+      (#{info.mbnm}, #{info.mbzlnm}, #{info.mbdjnm}, #{info.mgsxnm}, #{info.qbdwnm}, #{info.gjdqnm}, #{info.mbztnm},
+      #{info.mbfwc}, #{info.mbfwk}, #{info.mbmj}, #{info.mbzxdwd}, #{info.ssmbq}, #{info.mbgk}, #{info.zyqk},
+      #{info.zcfb}, #{info.jgxz}, #{info.yhbw}, #{info.dwzy}, #{info.dxhj}, #{info.fyss}, #{info.zbsm}, #{info.dwjd},
+      #{info.fssj}, #{info.fszzsj}, #{info.fxsj}, #{info.fxzzsj}, #{info.sjly}, #{info.sjsj}, #{info.nlgs},#{info.qxsw})
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    mbzlnm = VALUES(mbzlnm),
+    mbdjnm = VALUES(mbdjnm),
+    mgsxnm = VALUES(mgsxnm),
+    qbdwnm = VALUES(qbdwnm),
+    gjdqnm = VALUES(gjdqnm),
+    mbztnm = VALUES(mbztnm),
+    mbfwc = VALUES(mbfwc),
+    mbfwk = VALUES(mbfwk),
+    mbmj = VALUES(mbmj),
+    mbzxdwd = VALUES(mbzxdwd),
+    ssmbq = VALUES(ssmbq),
+    mbgk = VALUES(mbgk),
+    zyqk = VALUES(zyqk),
+    zcfb = VALUES(zcfb),
+    jgxz = VALUES(jgxz),
+    yhbw = VALUES(yhbw),
+    dwzy = VALUES(dwzy),
+    dxhj = VALUES(dxhj),
+    fyss = VALUES(fyss),
+    zbsm = VALUES(zbsm),
+    dwjd = VALUES(dwjd),
+    fssj = VALUES(fssj),
+    fszzsj = VALUES(fszzsj),
+    fxsj = VALUES(fxsj),
+    fxzzsj = VALUES(fxzzsj),
+    sjly = VALUES(sjly),
+    sjsj = VALUES(sjsj),
+    nlgs = VALUES(nlgs),
+    qxsw = VALUES(qxsw)
+  </insert>
+
+  <insert id="mtmbInsertOrUpdate">
+    INSERT INTO qb_tjwjqk_mb_mt
+    (`MTNM`, `MBNM`, `FXBGNM`, `MTGSNM`, `MTLXNM`,
+    `PTMC`, `CGQMC`, `BLCNM`, `BT`, `JS`,
+    `ZXDJD`, `ZXDWD`, `ZSJJD`, `ZSJWD`, `YXJJD`,
+    `YXJWD`, `DTTY`, `DWWC`, `WJM`, `MTDX`,
+    `MTSJ`, `MTCD`, `path`) VALUES
+    <foreach collection="list" item="info" separator="," >
+      (#{info.mtnm},#{info.mbnm},#{info.fxbgnm},#{info.mtgsnm},#{info.mtlxnm},
+      #{info.ptmc},#{info.cgqmc},#{info.blcnm},#{info.bt},#{info.js},
+      #{info.zxdjd},#{info.zxdwd},#{info.zsjjd},#{info.zsjwd},#{info.yxjjd},
+      #{info.yxjwd},#{info.dtty},#{info.dwwc},#{info.wjm},#{info.mtdx},
+      #{info.mtsj},#{info.mtcd},#{info.path})
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    mbnm = VALUES(mbnm),
+    fxbgnm = VALUES(fxbgnm),
+    mtgsnm = VALUES(mtgsnm),
+    mtlxnm = VALUES(mtlxnm),
+    ptmc = VALUES(ptmc),
+    cgqmc = VALUES(cgqmc),
+    blcnm = VALUES(blcnm),
+    bt = VALUES(bt),
+    js = VALUES(js),
+    zxdjd = VALUES(zxdjd),
+    zxdwd = VALUES(zxdwd),
+    zsjjd = VALUES(zsjjd),
+    zsjwd = VALUES(zsjwd),
+    yxjjd = VALUES(yxjjd),
+    yxjwd = VALUES(yxjwd),
+    dtty = VALUES(dtty),
+    dwwc = VALUES(dwwc),
+    wjm = VALUES(wjm),
+    mtdx = VALUES(mtdx),
+    mtsj = VALUES(mtsj),
+    mtcd = VALUES(mtcd),
+    path = VALUES(path)
+  </insert>
+
+
+  <select id="getMbFjPath" resultType="java.lang.String">
+    SELECT concat('/',gj.mc,'/',mb.mbmc,'/')  FROM qb_tjwjqk_mb mb
+    left join qb_tjwjqk_mbqk qk on mb.mbnm = qk.mbnm
+    left join zzbz_s_ty_gj gj on qk.GJDQNM = gj.GJDQNM
+    where mb.mbnm in
+    <foreach collection="ids" item="item" open="(" close=")" separator="," >
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="selectDownMbInfo" resultType="com.geovis.jg.mb.model.QbTjwjqkMbDown">
+    select * from qb_tjwjqk_mb
+    where mbnm in
+    <foreach collection="ids" item="item" open="(" close=")" separator="," >
+      #{item}
+    </foreach>
+  </select>
+
+<!--  <select id="selectDownMbJbqk" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqkDown">-->
+  <select id="selectDownMbJbqk" resultType="com.geovis.jg.mb.model.QbTjwjqkMbqkDown">
+    select qk.*,mb.MBMC mbmc from qb_tjwjqk_mbqk qk
+    left join qb_tjwjqk_mb mb on qk.mbnm = mb.mbnm
+    where qk.mbnm in
+    <foreach collection="ids" item="item" open="(" close=")" separator="," >
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="selectDownMbFj" resultType="com.geovis.jg.mb.model.QbTjwjqkMbMt">
+    select * from qb_tjwjqk_mb_mt
+    where mbnm in
+    <foreach collection="ids" item="item" open="(" close=")" separator="," >
+      #{item}
+    </foreach>
+  </select>
+    <select id="getGjqdByNm" resultType="java.lang.String">
+      select mc from zzbz_s_ty_gj where GJDQNM = #{gjdqnm}
+    </select>
+</mapper>
